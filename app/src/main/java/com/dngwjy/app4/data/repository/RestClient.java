@@ -1,4 +1,4 @@
-package com.dngwjy.app4.repository;
+package com.dngwjy.app4.data.repository;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
