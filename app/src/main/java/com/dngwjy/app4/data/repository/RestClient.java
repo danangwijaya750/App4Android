@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestClient {
     private  static Retrofit.Builder builder(){
-        return new Retrofit.Builder().baseUrl("").addConverterFactory(GsonConverterFactory.create());
+        return new Retrofit.Builder().baseUrl("https://api.myjson.com/").addConverterFactory(GsonConverterFactory.create());
     }
 
     private static Retrofit retrofit(){

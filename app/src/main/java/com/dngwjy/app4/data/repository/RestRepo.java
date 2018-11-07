@@ -11,7 +11,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface RestRepo {
-    @GET("/")
+    @GET("/bins/1501ge")
     Call<List<MasjidModel>> getMasjid();
 
     @GET("/")
