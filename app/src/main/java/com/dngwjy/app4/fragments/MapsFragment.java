@@ -1,6 +1,5 @@
 package com.dngwjy.app4.fragments;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,7 +12,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,23 +20,19 @@ import android.view.ViewGroup;
 
 import com.dngwjy.app4.R;
 import com.dngwjy.app4.data.models.MasjidModel;
-import com.dngwjy.app4.presenters.MapsPresenter;
-
+import com.dngwjy.app4.views.MapsView;
 
 import org.osmdroid.api.IMapController;
-
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
-import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.List;
-import java.util.Objects;
 
-public class MapsFragment extends Fragment implements MapsPresenter {
+public class MapsFragment extends Fragment implements MapsView {
     private MapView mapView;
     private IMapController mapController;
     private MyLocationNewOverlay myLocationNewOverlay;

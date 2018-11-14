@@ -1,10 +1,10 @@
-package com.dngwjy.app4.presenters;
+package com.dngwjy.app4.views;
 
 import com.dngwjy.app4.data.models.MasjidModel;
 
 import java.util.List;
 
-public interface MapsPresenter {
+public interface MapsView {
 void LoadingData();
 void shoLoad();
 void finishLoadin();
