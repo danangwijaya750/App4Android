@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 
 import com.dngwjy.app4.R;
 import com.dngwjy.app4.data.models.MasjidModel;
+import com.dngwjy.app4.presenters.MapsPresenter;
 import com.dngwjy.app4.views.MapsView;
 
 import org.osmdroid.api.IMapController;
@@ -42,6 +43,7 @@ public class MapsFragment extends Fragment implements MapsView {
     public GeoPoint curLoc;
     private  List<MasjidModel> models;
     public boolean centered = false;
+    private MapsPresenter presenter;
 
     @Nullable
     @Override
@@ -56,6 +58,7 @@ public class MapsFragment extends Fragment implements MapsView {
         super.onViewCreated(view, savedInstanceState);
         setMap(view);
         setMyLocationNewOverlay();
+        presenter= new MapsPresenter(this);
     }
 
     @Override
@@ -102,7 +105,8 @@ public class MapsFragment extends Fragment implements MapsView {
 
             if(!centered){
                 setCentered(curLoc);
-                showData(models);
+                presenter.getData();
+//                showData(models);
             }
             Log.d("curloc ", "getLocation: "+curLoc);
         }
@@ -116,7 +120,6 @@ public class MapsFragment extends Fragment implements MapsView {
     @Override
     public void LoadingData() {
         getLocation();
-
     }
 
     @Override
