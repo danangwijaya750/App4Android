@@ -13,14 +13,18 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.dngwjy.app4.R;
+import com.dngwjy.app4.activities.MainActivity;
+import com.dngwjy.app4.data.adapters.MainAdapter;
 import com.dngwjy.app4.data.models.MasjidModel;
 import com.dngwjy.app4.presenters.MapsPresenter;
+import com.dngwjy.app4.utils.SetUpLayMan;
 import com.dngwjy.app4.views.MapsView;
 
 import org.osmdroid.api.IMapController;
@@ -31,6 +35,7 @@ import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MapsFragment extends Fragment implements MapsView {
@@ -41,24 +46,32 @@ public class MapsFragment extends Fragment implements MapsView {
     private LocationListener listener;
     private LocationManager manager;
     public GeoPoint curLoc;
-    private  List<MasjidModel> models;
+    private  List<MasjidModel> models= new ArrayList<>();
     public boolean centered = false;
     private MapsPresenter presenter;
+    private MainAdapter adapter;
+    private RecyclerView recyclerView;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.maps_fragment, container, false);
-//        setMap(rootView);
         return rootView;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        presenter= new MapsPresenter(this);
+        adapter= new MainAdapter(getContext(),models);
         setMap(view);
         setMyLocationNewOverlay();
-        presenter= new MapsPresenter(this);
+        setRecyclerView(view);
+    }
+    void setRecyclerView(View view){
+        recyclerView=view.findViewById(R.id.recMaps);
+        recyclerView.setLayoutManager(SetUpLayMan.linearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -102,10 +115,10 @@ public class MapsFragment extends Fragment implements MapsView {
         Log.d("loc", "getLocation: " +loc);
         if(loc!=null){
             curLoc= new GeoPoint(loc.getLatitude(),loc.getLongitude());
-
+            presenter.getData();
             if(!centered){
                 setCentered(curLoc);
-                presenter.getData();
+
 //                showData(models);
             }
             Log.d("curloc ", "getLocation: "+curLoc);
@@ -114,7 +127,6 @@ public class MapsFragment extends Fragment implements MapsView {
     void setCentered(GeoPoint loc){
         mapController.setCenter(new GeoPoint(loc.getLatitude(),loc.getLongitude()));
         centered=true;
-
     }
 
     @Override
@@ -134,16 +146,16 @@ public class MapsFragment extends Fragment implements MapsView {
 
     @Override
     public void showData(List<MasjidModel> data) {
-        double longi[]={110.3885578,110.3874904,110.3859055};
-        double lat[]={-7.7729103,-7.771337,-7.7740175};
-        String name[]={"Majid Alfalaah","Mushola AlMusthofa","Masjid Mujahidin UNY"};
-        for (int i = 0; i < longi.length; i++) {
-            Marker marker= new Marker(mapView);
-            marker.setPosition(new GeoPoint(lat[i],longi[i]));
-            marker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
-            mapView.getOverlays().add(marker);
-            marker.setTitle(name[i]);
-        }
+        models.clear();
+        models.addAll(data);
+        adapter.notifyDataSetChanged();
+//        for (int i = 0; i < data.size(); i++) {
+//            Marker marker= new Marker(mapView);
+//            marker.setPosition(new GeoPoint(data.get(i).getLatitude(),data.get(i).getLatitude()));
+//            marker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
+//            mapView.getOverlays().add(marker);
+//            marker.setTitle(name[i]);
+//        }
     }
 
 

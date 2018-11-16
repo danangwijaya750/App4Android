@@ -13,6 +13,26 @@ public class MasjidModel {
     String image;
     @SerializedName("verified")
     String verified;
+    @SerializedName("longitude")
+    double longitude;
+    @SerializedName("latitude")
+    double latitude;
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
 
     public String getId() {
         return id;

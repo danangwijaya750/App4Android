@@ -28,6 +28,7 @@ MapsView view;
             public void onResponse(Call<List<MasjidModel>> call, Response<List<MasjidModel>> response) {
                 view.finishLoadin();
                 view.showData(response.body());
+                Log.d("data", "onResponse: "+response.body().size());
             }
 
             @Override

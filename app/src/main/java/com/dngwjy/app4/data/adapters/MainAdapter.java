@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dngwjy.app4.R;
 import com.dngwjy.app4.data.models.MasjidModel;
@@ -51,6 +52,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHold> {
             masjid=(TextView)itemView.findViewById(R.id.namaMasjid);
             alamat=(TextView)itemView.findViewById(R.id.alamatMasjid);
             imageView=(ImageView)itemView.findViewById(R.id.imageMasjid);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context,masjid.getText(),Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 }

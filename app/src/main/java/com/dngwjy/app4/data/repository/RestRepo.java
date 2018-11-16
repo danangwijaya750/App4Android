@@ -14,10 +14,10 @@ public interface RestRepo {
     @GET("/bins/1501ge")
     Call<List<MasjidModel>> getMasjid();
 
-    @GET("/")
+    @GET("/bins/175n1u")
     Call<List<KasModel>> getKasMasjid();
 
-    @GET("/")
+    @GET("/bins/175n1u")
     Call<List<EventModel>> getEvent();
 
 
