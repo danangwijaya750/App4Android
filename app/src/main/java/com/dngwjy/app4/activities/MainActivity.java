@@ -2,16 +2,21 @@ package com.dngwjy.app4.activities;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTabHost;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.dngwjy.app4.R;
@@ -27,25 +32,52 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MainView {
-private TabLayout tabLayout;
-private ViewPager viewPager;
+private FrameLayout frameLayout;
+private BottomNavigationView navigationView;
+private boolean inMain=true;
 @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        tabLayout=findViewById(R.id.htab_tabs);
-        viewPager=findViewById(R.id.htab_viewpager);
-        setupViewPager(viewPager);
-        tabLayout.setupWithViewPager(viewPager);
+        frameLayout=findViewById(R.id.deploy);
+        navigationView=findViewById(R.id.navControl);
+        navigationView.setOnNavigationItemSelectedListener(onNav);
+        navigationView.setSelectedItemId(R.id.event);
+    }
+    private BottomNavigationView.OnNavigationItemSelectedListener onNav= new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+            switch (menuItem.getItemId()){
+                case R.id.event:
+                    setFragment(new EventFragment());
+                    inMain=true;
+                    return true;
+                case R.id.maping:
+                    setFragment(new MapsFragment());
+                    inMain=false;
+                    return true;
+            }
+
+            return false;
+        }
+    };
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(inMain){
+            this.finish();
+        }else{
+            navigationView.setSelectedItemId(R.id.event);
+        }
     }
 
-    private void setupViewPager(ViewPager viewPage){
-       ViewPagerPagerAdapter adapter= new ViewPagerPagerAdapter(getSupportFragmentManager());
-       adapter.addFragment(new EventFragment(),"Event");
-       adapter.addFragment(new MapsFragment(),"Maps");
-        viewPage.setAdapter(adapter);
+    void setFragment(Fragment fragment){
+    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+    transaction.replace(R.id.deploy,fragment);
+    transaction.addToBackStack(null);
+    transaction.commit();
 }
-
     @Override
     public void showLoad() {
         Toast.makeText(this,"Loading data",Toast.LENGTH_SHORT).show();
@@ -61,34 +93,5 @@ private ViewPager viewPager;
 
     }
 
-    private class ViewPagerPagerAdapter extends FragmentPagerAdapter {
-    final List<Fragment> fragmentList= new ArrayList<>();
-    final List<String> titleList= new ArrayList<>();
-        public ViewPagerPagerAdapter(FragmentManager supportFragmentManager) {
-            super(supportFragmentManager);
 
-        }
-
-        @Override
-        public Fragment getItem(int i) {
-            return fragmentList.get(i);
-        }
-
-
-        @Override
-        public int getCount() {
-            return fragmentList.size();
-        }
-
-        void addFragment(Fragment fragment, String title){
-            fragmentList.add(fragment);
-            titleList.add(title);
-        }
-
-        @Nullable
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return titleList.get(position);
-        }
-    }
 }

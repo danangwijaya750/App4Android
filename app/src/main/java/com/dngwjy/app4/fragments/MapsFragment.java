@@ -13,6 +13,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MapsFragment extends Fragment implements MapsView {
+    private SwipeRefreshLayout layout;
     private MapView mapView;
     private IMapController mapController;
     private MyLocationNewOverlay myLocationNewOverlay;
@@ -62,29 +64,26 @@ public class MapsFragment extends Fragment implements MapsView {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        layout=view.findViewById(R.id.swiper);
         presenter= new MapsPresenter(this);
         adapter= new MainAdapter(getContext(),models);
         setMap(view);
         setMyLocationNewOverlay();
         setRecyclerView(view);
+        layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.getData();
+            }
+        });
     }
+
     void setRecyclerView(View view){
         recyclerView=view.findViewById(R.id.recMaps);
         recyclerView.setLayoutManager(SetUpLayMan.linearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mapView.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mapView.onPause();
-    }
 
     void setMap(View view) {
         mapView = view.findViewById(R.id.maps);
@@ -108,9 +107,8 @@ public class MapsFragment extends Fragment implements MapsView {
         int i = getContext().getPackageManager().checkPermission("android.permission.ACCESS_FINE_LOCATION", getContext().getPackageName());
         int j = getContext().getPackageManager().checkPermission("android.permission.ACCESS_COARSE_LOCATION", getContext().getPackageName());
         if(i == PackageManager.PERMISSION_GRANTED && j == PackageManager.PERMISSION_GRANTED){
-
         }
-        manager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,listener);
+        manager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1,1,listener);
         Location loc=manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         Log.d("loc", "getLocation: " +loc);
         if(loc!=null){
@@ -131,21 +129,23 @@ public class MapsFragment extends Fragment implements MapsView {
 
     @Override
     public void LoadingData() {
+        layout.setRefreshing(true);
         getLocation();
     }
 
     @Override
     public void shoLoad() {
-
+        layout.setRefreshing(true);
     }
 
     @Override
     public void finishLoadin() {
-
+        layout.setRefreshing(false);
     }
 
     @Override
     public void showData(List<MasjidModel> data) {
+
         models.clear();
         models.addAll(data);
         adapter.notifyDataSetChanged();

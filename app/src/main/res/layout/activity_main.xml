@@ -7,40 +7,19 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".activities.MainActivity">
+<FrameLayout
+    android:id="@+id/deploy"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    />
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/htab_appbar"
+    <android.support.design.widget.BottomNavigationView
         android:layout_width="match_parent"
+        android:id="@+id/navControl"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        app:theme="@style/AppTheme">
-
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/htab_collapse_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
-            app:titleEnabled="true">
-
-
-            <android.support.design.widget.TabLayout
-                android:id="@+id/htab_tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                app:tabIndicatorColor="@android:color/white"
-                app:tabSelectedTextColor="@android:color/white"
-                app:tabTextColor="#fff"/>
-
-        </android.support.design.widget.CollapsingToolbarLayout>
-
-    </android.support.design.widget.AppBarLayout>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/htab_viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
+        android:layout_gravity="bottom"
+        android:background="#fff"
+        app:menu="@menu/menu_nav"
+        />
 </android.support.design.widget.CoordinatorLayout>

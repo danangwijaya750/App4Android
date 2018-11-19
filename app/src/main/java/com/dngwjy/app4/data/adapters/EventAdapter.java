@@ -35,7 +35,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.judul.setText(eventModels.get(i).getTitle());
         viewHolder.tanggal_event.setText(eventModels.get(i).getEventDate());
-        Picasso.get().load(eventModels.get(i).getFeatureImage()).into(viewHolder.imageView);
+        Picasso.get().load(eventModels.get(i).getFeatureImage()).noFade().into(viewHolder.imageView);
     }
 
     @Override
