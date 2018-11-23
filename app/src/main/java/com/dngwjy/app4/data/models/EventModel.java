@@ -1,9 +1,12 @@
 package com.dngwjy.app4.data.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class EventModel {
+public class EventModel implements Parcelable {
 
     @SerializedName("id")
     @Expose
@@ -26,6 +29,28 @@ public class EventModel {
     @SerializedName("feature_image")
     @Expose
     private String featureImage;
+
+    protected EventModel(Parcel in) {
+        id = in.readString();
+        idMasjid = in.readString();
+        title = in.readString();
+        body = in.readString();
+        created = in.readString();
+        eventDate = in.readString();
+        featureImage = in.readString();
+    }
+
+    public static final Creator<EventModel> CREATOR = new Creator<EventModel>() {
+        @Override
+        public EventModel createFromParcel(Parcel in) {
+            return new EventModel(in);
+        }
+
+        @Override
+        public EventModel[] newArray(int size) {
+            return new EventModel[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -81,5 +106,21 @@ public class EventModel {
 
     public void setFeatureImage(String featureImage) {
         this.featureImage = featureImage;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(idMasjid);
+        dest.writeString(title);
+        dest.writeString(body);
+        dest.writeString(created);
+        dest.writeString(eventDate);
+        dest.writeString(featureImage);
     }
 }

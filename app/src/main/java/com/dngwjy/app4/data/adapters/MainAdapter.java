@@ -1,6 +1,7 @@
 package com.dngwjy.app4.data.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,7 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.dngwjy.app4.R;
+import com.dngwjy.app4.activities.ActivityDetailMasjid;
 import com.dngwjy.app4.data.models.MasjidModel;
 import com.squareup.picasso.Picasso;
 
@@ -34,9 +37,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHold> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHold viewHold, int i) {
-        viewHold.masjid.setText(masjidModels.get(i).getNama_masjid());
-        viewHold.alamat.setText(masjidModels.get(i).getAlamat());
-        Picasso.get().load(masjidModels.get(i).getImage()).into(viewHold.imageView);
+        viewHold.binding(masjidModels.get(i));
     }
 
     @Override
@@ -47,17 +48,27 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHold> {
     public class ViewHold extends RecyclerView.ViewHolder {
         TextView masjid,alamat;
         ImageView imageView;
+        View view;
         public ViewHold(@NonNull View itemView) {
             super(itemView);
             masjid=(TextView)itemView.findViewById(R.id.namaMasjid);
             alamat=(TextView)itemView.findViewById(R.id.alamatMasjid);
             imageView=(ImageView)itemView.findViewById(R.id.imageMasjid);
-            itemView.setOnClickListener(new View.OnClickListener() {
+            this.view=itemView;
+        }
+        public void binding(final MasjidModel model){
+            masjid.setText(model.getNama_masjid());
+            alamat.setText(model.getAlamat());
+            Glide.with(itemView).load(model.getImage()).into(imageView);
+            view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context,masjid.getText(),Toast.LENGTH_SHORT).show();
+                    Intent intent= new Intent(context,ActivityDetailMasjid.class);
+                    intent.putExtra("data",model);
+                    context.startActivity(intent);
                 }
             });
         }
+
     }
 }

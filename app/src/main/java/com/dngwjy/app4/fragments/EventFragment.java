@@ -27,6 +27,11 @@ public class EventFragment extends Fragment implements EventView {
     private List<EventModel> models = new ArrayList<>();
     private EventPresenter presenter;
     private SwipeRefreshLayout refreshLayout;
+
+    public static  Fragment newInstance(){
+        EventFragment fragment= new EventFragment();
+        return  fragment;
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

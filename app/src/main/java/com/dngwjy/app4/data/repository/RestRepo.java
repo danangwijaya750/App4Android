@@ -20,5 +20,8 @@ public interface RestRepo {
     @GET("/bins/175n1u")
     Call<List<EventModel>> getEvent();
 
+    @GET("")
+    Call<List<EventModel>>eventOfMasjid();
+
 
 }

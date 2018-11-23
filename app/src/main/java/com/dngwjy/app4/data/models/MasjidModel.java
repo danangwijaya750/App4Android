@@ -1,8 +1,11 @@
 package com.dngwjy.app4.data.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class MasjidModel {
+public class MasjidModel implements Parcelable {
     @SerializedName("id")
     String id;
     @SerializedName("nama_masjid")
@@ -17,6 +20,28 @@ public class MasjidModel {
     double longitude;
     @SerializedName("latitude")
     double latitude;
+
+    protected MasjidModel(Parcel in) {
+        id = in.readString();
+        nama_masjid = in.readString();
+        alamat = in.readString();
+        image = in.readString();
+        verified = in.readString();
+        longitude = in.readDouble();
+        latitude = in.readDouble();
+    }
+
+    public static final Creator<MasjidModel> CREATOR = new Creator<MasjidModel>() {
+        @Override
+        public MasjidModel createFromParcel(Parcel in) {
+            return new MasjidModel(in);
+        }
+
+        @Override
+        public MasjidModel[] newArray(int size) {
+            return new MasjidModel[size];
+        }
+    };
 
     public double getLongitude() {
         return longitude;
@@ -72,5 +97,21 @@ public class MasjidModel {
 
     public void setVerified(String verified) {
         this.verified = verified;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(nama_masjid);
+        dest.writeString(alamat);
+        dest.writeString(image);
+        dest.writeString(verified);
+        dest.writeDouble(longitude);
+        dest.writeDouble(latitude);
     }
 }

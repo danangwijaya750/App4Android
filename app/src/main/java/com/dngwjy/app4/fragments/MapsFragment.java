@@ -53,7 +53,10 @@ public class MapsFragment extends Fragment implements MapsView {
     private MapsPresenter presenter;
     private MainAdapter adapter;
     private RecyclerView recyclerView;
-
+public static  Fragment newInstance(){
+    MapsFragment fragment= new MapsFragment();
+    return  fragment;
+}
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -116,8 +119,6 @@ public class MapsFragment extends Fragment implements MapsView {
             presenter.getData();
             if(!centered){
                 setCentered(curLoc);
-
-//                showData(models);
             }
             Log.d("curloc ", "getLocation: "+curLoc);
         }
@@ -149,13 +150,14 @@ public class MapsFragment extends Fragment implements MapsView {
         models.clear();
         models.addAll(data);
         adapter.notifyDataSetChanged();
-//        for (int i = 0; i < data.size(); i++) {
-//            Marker marker= new Marker(mapView);
-//            marker.setPosition(new GeoPoint(data.get(i).getLatitude(),data.get(i).getLatitude()));
-//            marker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
-//            mapView.getOverlays().add(marker);
-//            marker.setTitle(name[i]);
-//        }
+        for (int i = 0; i < data.size(); i++) {
+            Marker marker= new Marker(mapView);
+            marker.setPosition(new GeoPoint(data.get(i).getLatitude(),data.get(i).getLatitude()));
+            marker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
+            mapView.getOverlays().add(marker);
+            marker.setTitle(data.get(i).getNama_masjid());
+            marker.setSubDescription(data.get(i).getAlamat());
+        }
     }
 
 

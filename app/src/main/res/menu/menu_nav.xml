@@ -3,10 +3,12 @@
 
     <item
         android:id="@+id/event"
+        android:icon="@drawable/ic_event_note_black_24dp"
         android:title="Event" />
 
     <item
         android:id="@+id/maping"
+        android:icon="@drawable/ic_map_black_24dp"
         android:title="Maps" />
 
 </menu>

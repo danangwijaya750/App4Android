@@ -49,11 +49,11 @@ private boolean inMain=true;
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             switch (menuItem.getItemId()){
                 case R.id.event:
-                    setFragment(new EventFragment());
+                    setFragment(EventFragment.newInstance());
                     inMain=true;
                     return true;
                 case R.id.maping:
-                    setFragment(new MapsFragment());
+                    setFragment(MapsFragment.newInstance());
                     inMain=false;
                     return true;
             }

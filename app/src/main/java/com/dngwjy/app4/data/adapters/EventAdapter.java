@@ -1,6 +1,7 @@
 package com.dngwjy.app4.data.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,7 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.dngwjy.app4.R;
+import com.dngwjy.app4.activities.ActivityDetaiEvent;
 import com.dngwjy.app4.data.models.EventModel;
 import com.squareup.picasso.Picasso;
 
@@ -33,9 +36,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.judul.setText(eventModels.get(i).getTitle());
-        viewHolder.tanggal_event.setText(eventModels.get(i).getEventDate());
-        Picasso.get().load(eventModels.get(i).getFeatureImage()).noFade().into(viewHolder.imageView);
+       viewHolder.Binding(eventModels.get(i));
     }
 
     @Override
@@ -46,15 +47,25 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView judul, tanggal_event;
         ImageView imageView;
+        View view;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             judul = itemView.findViewById(R.id.eventName);
             tanggal_event = itemView.findViewById(R.id.eventDate);
             imageView = itemView.findViewById(R.id.eventImage);
-            itemView.setOnClickListener(new View.OnClickListener() {
+            view=itemView;
+        }
+
+        void Binding(final EventModel model){
+            judul.setText(model.getTitle());
+            tanggal_event.setText(model.getEventDate());
+            Glide.with(itemView).load(model.getFeatureImage()).into(imageView);
+            view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context,judul.getText(),Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context,ActivityDetaiEvent.class);
+                    intent.putExtra("data",model);
+                    context.startActivity(intent);
                 }
             });
         }
