@@ -111,7 +111,7 @@ public static  Fragment newInstance(){
         int j = getContext().getPackageManager().checkPermission("android.permission.ACCESS_COARSE_LOCATION", getContext().getPackageName());
         if(i == PackageManager.PERMISSION_GRANTED && j == PackageManager.PERMISSION_GRANTED){
         }
-        manager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1,1,listener);
+        manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, listener);
         Location loc=manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         Log.d("loc", "getLocation: " +loc);
         if(loc!=null){
