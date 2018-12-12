@@ -17,6 +17,7 @@ import com.dngwjy.app4.data.models.EventModel;
 import com.dngwjy.app4.presenters.EventPresenter;
 import com.dngwjy.app4.utils.SetUpLayMan;
 import com.dngwjy.app4.views.EventView;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,11 +42,13 @@ public class EventFragment extends Fragment implements EventView {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        presenter= new EventPresenter(this);
+        Gson gson= new Gson();
+        presenter= new EventPresenter(this,this.getContext(),gson);
         setRefreshLayout(view);
         setAdapter(view);
         setRecyclerView(view);
-        presenter.getData();
+//        presenter.getData();
+        presenter.getDataVolley();
     }
 void setRefreshLayout(View v){
         refreshLayout=v.findViewById(R.id.swiper);

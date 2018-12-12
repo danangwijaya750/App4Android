@@ -23,7 +23,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.ActivityDetailMasjid" />
-        <activity android:name=".activities.ActivityDetaiEvent"></activity>
+        <activity android:name=".activities.ActivityDetaiEvent" />
+        <activity android:name=".activities.AddSaranActivity"></activity>
     </application>
 
 </manifest>
