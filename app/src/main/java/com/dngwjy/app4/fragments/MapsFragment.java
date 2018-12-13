@@ -68,14 +68,16 @@ public static  Fragment newInstance(){
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         layout=view.findViewById(R.id.swiper);
-        presenter= new MapsPresenter(this);
+        presenter= new MapsPresenter(this,this.getContext());
         adapter= new MainAdapter(getContext(),models);
         setMap(view);
         setMyLocationNewOverlay();
         setRecyclerView(view);
+        getLocation();
         layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+//                presenter.getDataVolley();
                 presenter.getData();
             }
         });
@@ -111,27 +113,30 @@ public static  Fragment newInstance(){
         int j = getContext().getPackageManager().checkPermission("android.permission.ACCESS_COARSE_LOCATION", getContext().getPackageName());
         if(i == PackageManager.PERMISSION_GRANTED && j == PackageManager.PERMISSION_GRANTED){
         }
-        manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, listener);
+        manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 1, listener);
         Location loc=manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         Log.d("loc", "getLocation: " +loc);
         if(loc!=null){
             curLoc= new GeoPoint(loc.getLatitude(),loc.getLongitude());
-            presenter.getData();
+//            presenter.getDataVolley();
+//            presenter.getData();
             if(!centered){
                 setCentered(curLoc);
+//                presenter.getData();
             }
             Log.d("curloc ", "getLocation: "+curLoc);
         }
     }
     void setCentered(GeoPoint loc){
         mapController.setCenter(new GeoPoint(loc.getLatitude(),loc.getLongitude()));
+        presenter.getData();
         centered=true;
     }
 
     @Override
     public void LoadingData() {
         layout.setRefreshing(true);
-        getLocation();
+        //getLocation();
     }
 
     @Override

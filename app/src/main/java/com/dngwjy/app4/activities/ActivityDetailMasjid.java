@@ -37,6 +37,7 @@ private TabLayout tabLayout;
         initData();
         imageView=findViewById(R.id.masjidImage);
         Glide.with(this).load(model.getImage()).into(imageView);
+        MasjidEventFragment.idMasjid=model.getId();
     }
     void initData(){
          model = getIntent().getExtras().getParcelable("data");

@@ -55,7 +55,8 @@ void setRefreshLayout(View v){
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                presenter.getData();
+               // presenter.getData();
+            presenter.getDataVolley();
             }
         });
 }

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.dngwjy.app4.R;
 
 public class MasjidDescFragment extends Fragment {
+    public  static  String deskripsi="";
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_detail_masjid,container,false);
     }

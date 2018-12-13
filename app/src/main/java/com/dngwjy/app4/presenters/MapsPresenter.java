@@ -1,12 +1,22 @@
 package com.dngwjy.app4.presenters;
 
+import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.dngwjy.app4.data.models.MasjidModel;
 import com.dngwjy.app4.data.repository.RestClient;
 import com.dngwjy.app4.views.MapsView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import retrofit2.Call;
@@ -15,9 +25,11 @@ import retrofit2.Response;
 
 public class MapsPresenter {
 MapsView view;
+Context context;
 
-    public MapsPresenter(MapsView view) {
+    public MapsPresenter(MapsView view,Context context) {
         this.view = view;
+        this.context=context;
     }
 
    public void  getData(){
@@ -39,4 +51,5 @@ MapsView view;
         });
 
     }
+
 }
