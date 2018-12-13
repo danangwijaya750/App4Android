@@ -38,11 +38,15 @@
                 android:layout_gravity="center"
                 >
                 <TextView
+                    android:textColor="#000"
+                    android:textSize="18sp"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:id="@+id/eventName"
                     />
                 <TextView
+                    android:textColor="#000"
+                    android:textSize="12sp"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:id="@+id/eventDate"

@@ -13,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.dngwjy.app4.R;
 import com.dngwjy.app4.activities.ActivityDetailMasjid;
 import com.dngwjy.app4.data.models.MasjidModel;
@@ -59,7 +61,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHold> {
         public void binding(final MasjidModel model){
             masjid.setText(model.getNama_masjid());
             alamat.setText(model.getAlamat());
-            Glide.with(itemView).load(model.getImage()).into(imageView);
+            Glide.with(itemView).load(model.getImage()).apply(new RequestOptions().transform(new RoundedCorners(20)).error(R.drawable.ic_event_note_black_24dp)).into(imageView);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

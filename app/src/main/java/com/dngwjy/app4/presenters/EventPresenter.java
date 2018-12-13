@@ -43,6 +43,7 @@ Gson gson;
         listCall.enqueue(new Callback<List<EventModel>>() {
             @Override
             public void onResponse(Call<List<EventModel>> call, Response<List<EventModel>> response) {
+                Log.d("res", "onResponse: "+response.body());
                 view.LoadData(response.body());
                 view.FinishLoading();
             }

@@ -47,16 +47,16 @@ public class EventFragment extends Fragment implements EventView {
         setRefreshLayout(view);
         setAdapter(view);
         setRecyclerView(view);
-//        presenter.getData();
-        presenter.getDataVolley();
+       presenter.getData();
+       // presenter.getDataVolley();
     }
 void setRefreshLayout(View v){
         refreshLayout=v.findViewById(R.id.swiper);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-               // presenter.getData();
-            presenter.getDataVolley();
+                presenter.getData();
+           // presenter.getDataVolley();
             }
         });
 }

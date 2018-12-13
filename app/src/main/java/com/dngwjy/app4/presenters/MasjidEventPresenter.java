@@ -27,13 +27,13 @@ public class MasjidEventPresenter {
 
     public void getData(String id){
         view.ShowLoading();
-        Call<List<EventModel>> listCall= RestClient.restRepo().eventOfMasjid();
+        Call<List<EventModel>> listCall= RestClient.restRepo().eventOfMasjid(id);
         listCall.enqueue(new Callback<List<EventModel>>() {
             @Override
             public void onResponse(Call<List<EventModel>> call, Response<List<EventModel>> response) {
                 view.HideLoading();
                 Log.d("response Length","length "+response.body().size());
-                Toast.makeText(context.getApplicationContext(),"data"+response.body().toString(),Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context.getApplicationContext(),"data"+response.body().toString(),Toast.LENGTH_SHORT).show();
                 view.ShowData(response.body());
             }
             @Override

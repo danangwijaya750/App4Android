@@ -9,20 +9,21 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface RestRepo {
-    @GET("/bins/1501ge")
+    @GET("Masjid")
     Call<List<MasjidModel>> getMasjid();
 
     @GET("/bins/175n1u")
     Call<List<KasModel>> getKasMasjid();
 
-    @GET("/bins/175n1u")
+    @GET("Event")
     Call<List<EventModel>> getEvent();
 
-    @GET("/bins/1dtm98")
-    Call<List<EventModel>>eventOfMasjid();
+    @GET("Event/getByMasjid/{id}")
+    Call<List<EventModel>>eventOfMasjid(@Path("id")String id);
 
 
 }

@@ -26,6 +26,7 @@
             >
 
         <ImageView
+
             android:layout_height="match_parent"
             android:layout_width="100dp"
             android:id="@+id/imageMasjid"
@@ -40,9 +41,13 @@
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:textSize="18sp"
+            android:textColor="#000"
             android:id="@+id/namaMasjid"
             />
             <TextView
+                android:textSize="12sp"
+                android:textColor="#000"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:id="@+id/alamatMasjid"
