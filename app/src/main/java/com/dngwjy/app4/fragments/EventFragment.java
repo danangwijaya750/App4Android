@@ -62,7 +62,7 @@ void setRefreshLayout(View v){
 }
     void setRecyclerView(View v){
         recyclerView= v.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(SetUpLayMan.linearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(SetUpLayMan.gridLayoutManager(getContext().getApplicationContext(),2));
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemViewCacheSize(20);
         recyclerView.setDrawingCacheEnabled(true);
