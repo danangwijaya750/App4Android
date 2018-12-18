@@ -8,9 +8,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.POST;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public interface RestRepo {
     @GET("Masjid")
@@ -23,7 +21,7 @@ public interface RestRepo {
     Call<List<EventModel>> getEvent();
 
     @GET("Event/getByMasjid/{id}")
-    Call<List<EventModel>>eventOfMasjid(@Path("id")String id);
+    Call<List<EventModel>> eventOfMasjid(@Path("id") String id);
 
 
 }

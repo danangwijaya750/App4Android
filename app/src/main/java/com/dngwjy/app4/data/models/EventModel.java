@@ -8,6 +8,17 @@ import com.google.gson.annotations.SerializedName;
 
 public class EventModel implements Parcelable {
 
+    public static final Creator<EventModel> CREATOR = new Creator<EventModel>() {
+        @Override
+        public EventModel createFromParcel(Parcel in) {
+            return new EventModel(in);
+        }
+
+        @Override
+        public EventModel[] newArray(int size) {
+            return new EventModel[size];
+        }
+    };
     @SerializedName("id")
     @Expose
     private String id;
@@ -39,18 +50,6 @@ public class EventModel implements Parcelable {
         eventDate = in.readString();
         featureImage = in.readString();
     }
-
-    public static final Creator<EventModel> CREATOR = new Creator<EventModel>() {
-        @Override
-        public EventModel createFromParcel(Parcel in) {
-            return new EventModel(in);
-        }
-
-        @Override
-        public EventModel[] newArray(int size) {
-            return new EventModel[size];
-        }
-    };
 
     public String getId() {
         return id;

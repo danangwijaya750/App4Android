@@ -5,7 +5,9 @@ import com.dngwjy.app4.data.models.MasjidModel;
 import java.util.List;
 
 public interface MainView {
-void showLoad();
-void finishLoad();
-void showData(List<MasjidModel> data);
+    void showLoad();
+
+    void finishLoad();
+
+    void showData(List<MasjidModel> data);
 }

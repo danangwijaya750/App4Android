@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import com.dngwjy.app4.R;
 import com.dngwjy.app4.data.adapters.EventAdapter;
 import com.dngwjy.app4.data.models.EventModel;
-import com.dngwjy.app4.presenters.EventPresenter;
 import com.dngwjy.app4.presenters.MasjidEventPresenter;
 import com.dngwjy.app4.utils.SetUpLayMan;
 import com.dngwjy.app4.views.MasjidEventView;
@@ -22,28 +21,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MasjidEventFragment extends Fragment implements MasjidEventView {
-    public static  String idMasjid="";
+    public static String idMasjid = "";
+    MasjidEventPresenter presenter;
     private RecyclerView recyclerView;
     private EventAdapter adapter;
     private List<EventModel> models = new ArrayList<>();
     private SwipeRefreshLayout refreshLayout;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_event_masjid,container,false);
+        return inflater.inflate(R.layout.fragment_event_masjid, container, false);
     }
-    MasjidEventPresenter presenter;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        presenter= new MasjidEventPresenter(this,this.getContext());
+        presenter = new MasjidEventPresenter(this, this.getContext());
         setRefreshLayout(view);
         setAdapter(view);
         setRecyclerView(view);
         presenter.getData(idMasjid);
     }
-    void setRefreshLayout(View v){
-        refreshLayout=v.findViewById(R.id.swiper);
+
+    void setRefreshLayout(View v) {
+        refreshLayout = v.findViewById(R.id.swiper);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -52,8 +54,9 @@ public class MasjidEventFragment extends Fragment implements MasjidEventView {
             }
         });
     }
-    void setRecyclerView(View v){
-        recyclerView= v.findViewById(R.id.recyclerView);
+
+    void setRecyclerView(View v) {
+        recyclerView = v.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(SetUpLayMan.linearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemViewCacheSize(20);
@@ -61,8 +64,8 @@ public class MasjidEventFragment extends Fragment implements MasjidEventView {
         recyclerView.setAdapter(adapter);
     }
 
-    void setAdapter(View v){
-        adapter= new EventAdapter(v.getContext(),models);
+    void setAdapter(View v) {
+        adapter = new EventAdapter(v.getContext(), models);
     }
 
     @Override

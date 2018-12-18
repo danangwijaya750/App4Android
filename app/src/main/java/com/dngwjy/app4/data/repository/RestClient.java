@@ -5,15 +5,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestClient {
     //"https://api.myjson.com/"
-    private  static Retrofit.Builder builder(){
+    private static Retrofit.Builder builder() {
         return new Retrofit.Builder().baseUrl("http://192.168.88.69/app4CI/").addConverterFactory(GsonConverterFactory.create());
     }
 
-    private static Retrofit retrofit(){
-        return  builder().build();
+    private static Retrofit retrofit() {
+        return builder().build();
     }
 
-    public static RestRepo restRepo(){
+    public static RestRepo restRepo() {
         return retrofit().create(RestRepo.class);
     }
 

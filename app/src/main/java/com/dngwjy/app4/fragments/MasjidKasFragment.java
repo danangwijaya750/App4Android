@@ -12,6 +12,6 @@ import com.dngwjy.app4.R;
 
 public class MasjidKasFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_kas_masjid,container,false);
+        return inflater.inflate(R.layout.fragment_kas_masjid, container, false);
     }
 }

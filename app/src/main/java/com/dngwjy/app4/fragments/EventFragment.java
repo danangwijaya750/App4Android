@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.dngwjy.app4.R;
 import com.dngwjy.app4.data.adapters.EventAdapter;
@@ -50,7 +49,7 @@ public class EventFragment extends Fragment implements EventView {
        presenter.getData();
        // presenter.getDataVolley();
     }
-void setRefreshLayout(View v){
+    void setRefreshLayout(View v){
         refreshLayout=v.findViewById(R.id.swiper);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -62,7 +61,7 @@ void setRefreshLayout(View v){
 }
     void setRecyclerView(View v){
         recyclerView= v.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(SetUpLayMan.gridLayoutManager(getContext().getApplicationContext(),2));
+        recyclerView.setLayoutManager(SetUpLayMan.linearLayoutManager(getContext().getApplicationContext()));
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemViewCacheSize(20);
         recyclerView.setDrawingCacheEnabled(true);

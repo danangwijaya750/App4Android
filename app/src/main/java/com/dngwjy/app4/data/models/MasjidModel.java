@@ -6,6 +6,17 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 public class MasjidModel implements Parcelable {
+    public static final Creator<MasjidModel> CREATOR = new Creator<MasjidModel>() {
+        @Override
+        public MasjidModel createFromParcel(Parcel in) {
+            return new MasjidModel(in);
+        }
+
+        @Override
+        public MasjidModel[] newArray(int size) {
+            return new MasjidModel[size];
+        }
+    };
     @SerializedName("id")
     String id;
     @SerializedName("nama_masjid")
@@ -30,18 +41,6 @@ public class MasjidModel implements Parcelable {
         longitude = in.readDouble();
         latitude = in.readDouble();
     }
-
-    public static final Creator<MasjidModel> CREATOR = new Creator<MasjidModel>() {
-        @Override
-        public MasjidModel createFromParcel(Parcel in) {
-            return new MasjidModel(in);
-        }
-
-        @Override
-        public MasjidModel[] newArray(int size) {
-            return new MasjidModel[size];
-        }
-    };
 
     public double getLongitude() {
         return longitude;

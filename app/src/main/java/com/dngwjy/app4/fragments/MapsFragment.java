@@ -21,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dngwjy.app4.R;
-import com.dngwjy.app4.activities.MainActivity;
 import com.dngwjy.app4.data.adapters.MainAdapter;
 import com.dngwjy.app4.data.models.MasjidModel;
 import com.dngwjy.app4.presenters.MapsPresenter;
@@ -48,15 +47,17 @@ public class MapsFragment extends Fragment implements MapsView {
     private LocationListener listener;
     private LocationManager manager;
     public GeoPoint curLoc;
-    private  List<MasjidModel> models= new ArrayList<>();
+    private List<MasjidModel> models = new ArrayList<>();
     public boolean centered = false;
     private MapsPresenter presenter;
     private MainAdapter adapter;
     private RecyclerView recyclerView;
-public static  Fragment newInstance(){
-    MapsFragment fragment= new MapsFragment();
-    return  fragment;
-}
+
+    public static Fragment newInstance() {
+        MapsFragment fragment = new MapsFragment();
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -67,9 +68,9 @@ public static  Fragment newInstance(){
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        layout=view.findViewById(R.id.swiper);
-        presenter= new MapsPresenter(this,this.getContext());
-        adapter= new MainAdapter(getContext(),models);
+        layout = view.findViewById(R.id.swiper);
+        presenter = new MapsPresenter(this, this.getContext());
+        adapter = new MainAdapter(getContext(), models);
         setMap(view);
         setMyLocationNewOverlay();
         setRecyclerView(view);
@@ -83,8 +84,8 @@ public static  Fragment newInstance(){
         });
     }
 
-    void setRecyclerView(View view){
-        recyclerView=view.findViewById(R.id.recMaps);
+    void setRecyclerView(View view) {
+        recyclerView = view.findViewById(R.id.recMaps);
         recyclerView.setLayoutManager(SetUpLayMan.linearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
     }
@@ -106,31 +107,32 @@ public static  Fragment newInstance(){
         LoadingData();
     }
 
-    void getLocation(){
-        listener= new LocationListenering(getContext());
+    void getLocation() {
+        listener = new LocationListenering(getContext());
         manager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         int i = getContext().getPackageManager().checkPermission("android.permission.ACCESS_FINE_LOCATION", getContext().getPackageName());
         int j = getContext().getPackageManager().checkPermission("android.permission.ACCESS_COARSE_LOCATION", getContext().getPackageName());
-        if(i == PackageManager.PERMISSION_GRANTED && j == PackageManager.PERMISSION_GRANTED){
+        if (i == PackageManager.PERMISSION_GRANTED && j == PackageManager.PERMISSION_GRANTED) {
         }
         manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 1, listener);
-        Location loc=manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        Log.d("loc", "getLocation: " +loc);
-        if(loc!=null){
-            curLoc= new GeoPoint(loc.getLatitude(),loc.getLongitude());
+        Location loc = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Log.d("loc", "getLocation: " + loc);
+        if (loc != null) {
+            curLoc = new GeoPoint(loc.getLatitude(), loc.getLongitude());
 //            presenter.getDataVolley();
 //            presenter.getData();
-            if(!centered){
+            if (!centered) {
                 setCentered(curLoc);
 //                presenter.getData();
             }
-            Log.d("curloc ", "getLocation: "+curLoc);
+            Log.d("curloc ", "getLocation: " + curLoc);
         }
     }
-    void setCentered(GeoPoint loc){
-        mapController.setCenter(new GeoPoint(loc.getLatitude(),loc.getLongitude()));
+
+    void setCentered(GeoPoint loc) {
+        mapController.setCenter(new GeoPoint(loc.getLatitude(), loc.getLongitude()));
         presenter.getData();
-        centered=true;
+        centered = true;
     }
 
     @Override
@@ -156,9 +158,9 @@ public static  Fragment newInstance(){
         models.addAll(data);
         adapter.notifyDataSetChanged();
         for (int i = 0; i < data.size(); i++) {
-            Marker marker= new Marker(mapView);
-            marker.setPosition(new GeoPoint(data.get(i).getLatitude(),data.get(i).getLatitude()));
-            marker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
+            Marker marker = new Marker(mapView);
+            marker.setPosition(new GeoPoint(data.get(i).getLongitude(), data.get(i).getLatitude()));
+            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
             mapView.getOverlays().add(marker);
             marker.setTitle(data.get(i).getNama_masjid());
             marker.setSubDescription(data.get(i).getAlamat());
@@ -175,8 +177,8 @@ public static  Fragment newInstance(){
 
         @Override
         public void onLocationChanged(Location location) {
-            curLoc= new GeoPoint(location.getLatitude(),location.getLongitude());
-            if(!centered){
+            curLoc = new GeoPoint(location.getLatitude(), location.getLongitude());
+            if (!centered) {
                 setCentered(curLoc);
             }
         }
@@ -193,13 +195,13 @@ public static  Fragment newInstance(){
 
         @Override
         public void onProviderDisabled(String provider) {
-            final AlertDialog.Builder builder= new AlertDialog.Builder(context);
+            final AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle("GPS Settings");
             builder.setMessage("GPS Tidak Aktiv, Aplikasi ini Butuh GPS yang Aktiv");
             builder.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    Intent intent= new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                     context.startActivity(intent);
                 }
             });

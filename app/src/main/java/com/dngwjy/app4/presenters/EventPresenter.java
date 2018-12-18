@@ -5,17 +5,13 @@ import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.dngwjy.app4.data.models.EventModel;
 import com.dngwjy.app4.data.repository.RestClient;
-import com.dngwjy.app4.data.repository.RestRepo;
 import com.dngwjy.app4.views.EventView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -27,23 +23,23 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class EventPresenter {
-EventView view;
-Context context;
-Gson gson;
+    EventView view;
+    Context context;
+    Gson gson;
 
-    public EventPresenter(EventView view,Context context, Gson gson) {
+    public EventPresenter(EventView view, Context context, Gson gson) {
         this.view = view;
-        this.context=context;
-        this.gson=gson;
+        this.context = context;
+        this.gson = gson;
     }
 
-    public void getData(){
+    public void getData() {
         view.ShowLoading();
-        Call<List<EventModel>> listCall= RestClient.restRepo().getEvent();
+        Call<List<EventModel>> listCall = RestClient.restRepo().getEvent();
         listCall.enqueue(new Callback<List<EventModel>>() {
             @Override
             public void onResponse(Call<List<EventModel>> call, Response<List<EventModel>> response) {
-                Log.d("res", "onResponse: "+response.body());
+                Log.d("res", "onResponse: " + response.body());
                 view.LoadData(response.body());
                 view.FinishLoading();
             }
@@ -56,19 +52,20 @@ Gson gson;
 
     }
 
-    public void getDataVolley(){
+    public void getDataVolley() {
         view.ShowLoading();
-        StringRequest request= new StringRequest(Request.Method.GET, "https://api.myjson.com/bins/175n1u",
+        StringRequest request = new StringRequest(Request.Method.GET, "https://api.myjson.com/bins/175n1u",
                 new com.android.volley.Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         view.FinishLoading();
-                        Type collectionType = new TypeToken<Collection<EventModel>>(){}.getType();
+                        Type collectionType = new TypeToken<Collection<EventModel>>() {
+                        }.getType();
                         Collection<EventModel> data = gson.fromJson(response, collectionType);
-                        Log.d("dataisthis","datais"+data.size());
+                        Log.d("dataisthis", "datais" + data.size());
                         List list;
                         if (data instanceof List)
-                            list = (List)data;
+                            list = (List) data;
                         else
                             list = new ArrayList(data);
                         view.LoadData(list);
@@ -77,7 +74,7 @@ Gson gson;
                 new com.android.volley.Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("erroris",error.getLocalizedMessage());
+                        Log.d("erroris", error.getLocalizedMessage());
                     }
                 });
         Volley.newRequestQueue(context).add(request);
