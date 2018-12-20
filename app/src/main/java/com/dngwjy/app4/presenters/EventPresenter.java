@@ -21,6 +21,10 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import rx.Observable;
+import rx.Scheduler;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class EventPresenter {
     EventView view;
@@ -51,32 +55,16 @@ public class EventPresenter {
         });
 
     }
-
-    public void getDataVolley() {
+    public void getDataObserve(){
         view.ShowLoading();
-        StringRequest request = new StringRequest(Request.Method.GET, "https://api.myjson.com/bins/175n1u",
-                new com.android.volley.Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        view.FinishLoading();
-                        Type collectionType = new TypeToken<Collection<EventModel>>() {
-                        }.getType();
-                        Collection<EventModel> data = gson.fromJson(response, collectionType);
-                        Log.d("dataisthis", "datais" + data.size());
-                        List list;
-                        if (data instanceof List)
-                            list = (List) data;
-                        else
-                            list = new ArrayList(data);
-                        view.LoadData(list);
-                    }
-                },
-                new com.android.volley.Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("erroris", error.getLocalizedMessage());
-                    }
-                });
-        Volley.newRequestQueue(context).add(request);
+        Observable<List<EventModel>> listObservable=RestClient.restRepo().getEventObserve();
+        listObservable.observeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(data->{
+                    view.LoadData(data);
+                    view.FinishLoading();
+                }
+        );
     }
+
+
 }
