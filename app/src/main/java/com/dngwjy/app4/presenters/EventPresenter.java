@@ -3,28 +3,20 @@ package com.dngwjy.app4.presenters;
 import android.content.Context;
 import android.util.Log;
 
-import com.android.volley.Request;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.dngwjy.app4.data.models.EventModel;
 import com.dngwjy.app4.data.repository.RestClient;
 import com.dngwjy.app4.views.EventView;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import rx.Observable;
-import rx.Scheduler;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class EventPresenter {
     EventView view;
@@ -55,15 +47,37 @@ public class EventPresenter {
         });
 
     }
-    public void getDataObserve(){
+
+    public void getDataByObserve() {
         view.ShowLoading();
-        Observable<List<EventModel>> listObservable=RestClient.restRepo().getEventObserve();
-        listObservable.observeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(data->{
-                    view.LoadData(data);
-                    view.FinishLoading();
-                }
-        );
+        getObserveable().subscribeWith(getObserver());
+    }
+
+    public Observable<List<EventModel>> getObserveable() {
+        return new RestClient().restRepo().getEventObserve().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public DisposableObserver<List<EventModel>> getObserver() {
+        return new DisposableObserver<List<EventModel>>() {
+            @Override
+            public void onNext(List<EventModel> eventModels) {
+                Log.d("EventFrag", "onNext: ");
+                view.LoadData(eventModels);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d("EventFrag", "onError: " + e.getLocalizedMessage());
+                view.FinishLoading();
+            }
+
+            @Override
+            public void onComplete() {
+                Log.d("EventFrag", "onComplete: completed");
+                view.FinishLoading();
+            }
+        };
     }
 
 

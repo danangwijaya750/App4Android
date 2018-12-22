@@ -79,7 +79,8 @@ public class MapsFragment extends Fragment implements MapsView {
             @Override
             public void onRefresh() {
 //                presenter.getDataVolley();
-                presenter.getData();
+//                presenter.getData();
+                presenter.getDataByObserve();
             }
         });
     }
@@ -131,7 +132,8 @@ public class MapsFragment extends Fragment implements MapsView {
 
     void setCentered(GeoPoint loc) {
         mapController.setCenter(new GeoPoint(loc.getLatitude(), loc.getLongitude()));
-        presenter.getData();
+//        presenter.getData();
+        presenter.getDataByObserve();
         centered = true;
     }
 

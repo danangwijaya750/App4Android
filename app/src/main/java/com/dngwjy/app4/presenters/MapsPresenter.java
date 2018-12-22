@@ -9,6 +9,10 @@ import com.dngwjy.app4.views.MapsView;
 
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,6 +44,34 @@ public class MapsPresenter {
             }
         });
 
+    }
+    public  void getDataByObserve(){
+        view.LoadingData();
+        getObserveable().subscribeWith(getObserver());
+    }
+    public Observable<List<MasjidModel>> getObserveable(){
+        return new RestClient().restRepo().getMasjidObserve().
+                subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    }
+    public DisposableObserver<List<MasjidModel>> getObserver(){
+        return new DisposableObserver<List<MasjidModel>>() {
+            @Override
+            public void onNext(List<MasjidModel> masjidModels) {
+                Log.d("MasjidFrag", "onNext: "+masjidModels.size());
+                view.showData(masjidModels);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d("MasjidFrag", "onError: "+e.getLocalizedMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                Log.d("MasjidFrag", "onComplete: Completed");
+                view.finishLoadin();
+            }
+        };
     }
 
 }
