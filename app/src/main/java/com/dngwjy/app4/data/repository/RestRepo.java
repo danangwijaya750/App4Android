@@ -33,6 +33,9 @@ public interface RestRepo {
     @GET("Event/getByMasjid")
     Observable<List<EventModel>> eventOfMasjidObserve(@Query("id") String id);
 
+    @GET("Masjid/getTerdekat")
+    Observable<List<MasjidModel>> masjidTerdekat(@Query("lats") Double lat, @Query("long") Double longit);
+
     @GET("Event")
     Observable<List<EventModel>>getEventObserve();
     @GET("Event/searchEvent")

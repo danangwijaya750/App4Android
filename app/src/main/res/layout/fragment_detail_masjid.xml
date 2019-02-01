@@ -2,9 +2,39 @@
 <android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
-<TextView
-    android:layout_height="wrap_content"
-    android:layout_width="wrap_content"
-    android:text="detail"
-    />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        >
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/namaMasjid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nama Masjid"
+                android:textColorHint="@color/colorPrimary"
+                android:editable="false"
+                android:textSize="15sp" />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/alamatMasjid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Alamat"
+                android:editable="false"
+                android:textColorHint="@color/colorPrimary"
+                android:textSize="15sp" />
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

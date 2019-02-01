@@ -1,5 +1,6 @@
 package com.dngwjy.app4.presenters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
@@ -45,14 +46,28 @@ public class MapsPresenter {
         });
 
     }
+    @SuppressLint("CheckResult")
     public  void getDataByObserve(){
         view.LoadingData();
         getObserveable().subscribeWith(getObserver());
     }
-    public Observable<List<MasjidModel>> getObserveable(){
+    private Observable<List<MasjidModel>> getObserveable(){
         return new RestClient().restRepo().getMasjidObserve().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+    @SuppressLint("CheckResult")
+    public void getMasjidTerdekat(double lat, double longit){
+        view.LoadingData();
+        getTerdekatObservable(lat,longit).subscribeWith(getObserver());
+    }
+
+    private Observable<List<MasjidModel>> getTerdekatObservable(double lat,double longit){
+        return  new RestClient().restRepo().masjidTerdekat(lat,longit).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+
+
     public DisposableObserver<List<MasjidModel>> getObserver(){
         return new DisposableObserver<List<MasjidModel>>() {
             @Override

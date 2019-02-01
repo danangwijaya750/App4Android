@@ -37,12 +37,13 @@ public class ActivityDetailMasjid extends AppCompatActivity {
         initData();
         imageView = findViewById(R.id.masjidImage);
         Glide.with(this).load(model.getImage()).into(imageView);
-        MasjidEventFragment.idMasjid = model.getId();
     }
 
     void initData() {
         model = getIntent().getExtras().getParcelable("data");
         Log.d("init", "initData: " + model.getNama_masjid());
+        MasjidDescFragment.model=this.model;
+        MasjidEventFragment.idMasjid = model.getId();
 
     }
 

@@ -85,7 +85,8 @@ public class MapsFragment extends Fragment implements MapsView {
         layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                presenter.getDataByObserve();
+                Log.d("EventFrag", "onRefresh: "+curLoc.getLatitude()+", "+curLoc.getLongitude());
+                presenter.getMasjidTerdekat(curLoc.getLatitude(),curLoc.getLongitude());
             }
         });
     }
@@ -103,7 +104,7 @@ public class MapsFragment extends Fragment implements MapsView {
         mapView.setMultiTouchControls(true);
         mapView.setBuiltInZoomControls(false);
         mapController = mapView.getController();
-        mapController.setZoom(13);
+        mapController.setZoom(18);
     }
 
     void setMyLocationNewOverlay() {
@@ -151,7 +152,7 @@ public class MapsFragment extends Fragment implements MapsView {
 
     void setCentered(GeoPoint loc) {
         mapController.setCenter(new GeoPoint(loc.getLatitude(), loc.getLongitude()));
-        presenter.getDataByObserve();
+        presenter.getMasjidTerdekat(curLoc.getLatitude(),curLoc.getLongitude());
         centered = true;
     }
 
@@ -173,17 +174,28 @@ public class MapsFragment extends Fragment implements MapsView {
 
     @Override
     public void showData(List<MasjidModel> data) {
-
+        float pk = (float) (180.f/Math.PI);
+        Log.d("MapFragment", "showData: "+pk);
         models.clear();
         models.addAll(data);
         adapter.notifyDataSetChanged();
+        mapView.getOverlays().clear();
+        mapView.invalidate();
         for (int i = 0; i < data.size(); i++) {
+            ArrayList col= new ArrayList();
             Marker marker = new Marker(mapView);
-            marker.setPosition(new GeoPoint(data.get(i).getLongitude(), data.get(i).getLatitude()));
+            marker.setPosition(new GeoPoint(data.get(i).getLatitude(), data.get(i).getLongitude()));
+            Location start=new Location("pointA");
+            start.setLatitude(curLoc.getLatitude());
+            start.setLongitude(curLoc.getLongitude());
+            Location end= new Location("pointB");
+            end.setLatitude(data.get(i).getLatitude());
+            end.setLongitude(data.get(i).getLongitude());
+            float dist=start.distanceTo(end);
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
             mapView.getOverlays().add(marker);
             marker.setTitle(data.get(i).getNama_masjid());
-            marker.setSubDescription(data.get(i).getAlamat());
+            marker.setSubDescription(data.get(i).getAlamat()+"\n jarak "+dist+" Meter");
         }
     }
 
