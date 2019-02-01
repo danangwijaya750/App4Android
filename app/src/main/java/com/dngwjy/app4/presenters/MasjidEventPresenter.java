@@ -1,5 +1,6 @@
 package com.dngwjy.app4.presenters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
@@ -10,6 +11,10 @@ import com.dngwjy.app4.views.MasjidEventView;
 
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,24 +28,32 @@ public class MasjidEventPresenter {
         this.context = context;
     }
 
+    @SuppressLint("CheckResult")
     public void getData(String id) {
-        view.ShowLoading();
-        Call<List<EventModel>> listCall = RestClient.restRepo().eventOfMasjid(id);
-        listCall.enqueue(new Callback<List<EventModel>>() {
+      view.ShowLoading();
+        observable(id).subscribeWith(getObserver());
+    }
+
+    private Observable<List<EventModel>> observable(String id){
+        return RestClient.restRepo().eventOfMasjidObserve(id).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+    private DisposableObserver<List<EventModel>> getObserver(){
+        return new DisposableObserver<List<EventModel>>() {
             @Override
-            public void onResponse(Call<List<EventModel>> call, Response<List<EventModel>> response) {
-                view.HideLoading();
-                Log.d("response Length", "length " + response.body().size());
-//                Toast.makeText(context.getApplicationContext(),"data"+response.body().toString(),Toast.LENGTH_SHORT).show();
-                view.ShowData(response.body());
+            public void onNext(List<EventModel> eventModels) {
+                view.ShowData(eventModels);
             }
 
             @Override
-            public void onFailure(Call<List<EventModel>> call, Throwable t) {
-                view.HideLoading();
-                Toast.makeText(context.getApplicationContext(), "error " + t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+            public void onError(Throwable e) {
 
+            }
+
+            @Override
+            public void onComplete() {
+                view.HideLoading();
+            }
+        };
     }
 }

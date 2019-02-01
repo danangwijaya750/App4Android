@@ -28,5 +28,8 @@
 
         <activity android:name=".activities.MainActivity" />
     </application>
+    <meta-data
+        android:name="io.futurestud.tutorials.glide.glidemodule.CustomImageSizeGlideModule"
+        android:value="GlideModule" />
 
 </manifest>

@@ -60,7 +60,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         void Binding(final EventModel model) {
             judul.setText(model.getTitle());
             tanggal_event.setText(model.getEventDate());
-            Glide.with(itemView).load(model.getFeatureImage()).apply(new RequestOptions().transform(new RoundedCorners(20)).error(R.drawable.ic_event_note_black_24dp)).into(imageView);
+            //Glide.with(itemView).load(model.getFeatureImage()).apply(new RequestOptions().transform(new RoundedCorners(20)).error(R.drawable.ic_event_note_black_24dp)).into(imageView);
+            Glide.with(context).load(model.getFeatureImage().toString()).apply(new RequestOptions().transform(new RoundedCorners(20)).error(R.drawable.ic_cloud_off_black_24dp)).into(imageView);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

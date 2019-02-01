@@ -50,8 +50,8 @@ public class MapsPresenter {
         getObserveable().subscribeWith(getObserver());
     }
     public Observable<List<MasjidModel>> getObserveable(){
-        return new RestClient().restRepo().getMasjidObserve().
-                subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+        return new RestClient().restRepo().getMasjidObserve().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
     public DisposableObserver<List<MasjidModel>> getObserver(){
         return new DisposableObserver<List<MasjidModel>>() {

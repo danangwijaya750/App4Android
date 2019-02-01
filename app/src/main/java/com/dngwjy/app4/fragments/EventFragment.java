@@ -6,9 +6,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.dngwjy.app4.R;
 import com.dngwjy.app4.data.adapters.EventAdapter;
@@ -27,7 +30,7 @@ public class EventFragment extends Fragment implements EventView {
     private List<EventModel> models = new ArrayList<>();
     private EventPresenter presenter;
     private SwipeRefreshLayout refreshLayout;
-
+    private EditText searchEdit;
     public static  Fragment newInstance(){
         EventFragment fragment= new EventFragment();
         return  fragment;
@@ -42,20 +45,37 @@ public class EventFragment extends Fragment implements EventView {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Gson gson= new Gson();
+        searchEdit=view.findViewById(R.id.search);
         presenter= new EventPresenter(this,this.getContext(),gson);
         setRefreshLayout(view);
         setAdapter(view);
         setRecyclerView(view);
-       presenter.getData();
-       // presenter.getDataVolley();
+        presenter.getDataByObserve();
+        searchEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(count>0){
+                 presenter.searchData(searchEdit.getText().toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
     void setRefreshLayout(View v){
         refreshLayout=v.findViewById(R.id.swiper);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                presenter.getData();
-           // presenter.getDataVolley();
+                presenter.getDataByObserve();
             }
         });
 }

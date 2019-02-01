@@ -53,22 +53,32 @@ public class EventPresenter {
         getObserveable().subscribeWith(getObserver());
     }
 
-    public Observable<List<EventModel>> getObserveable() {
+     Observable<List<EventModel>> getObserveable() {
         return new RestClient().restRepo().getEventObserve().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public DisposableObserver<List<EventModel>> getObserver() {
+    public void  searchData(String query){
+        view.ShowLoading();
+        searchObserve(query).subscribeWith(getObserver());
+    }
+    Observable<List<EventModel>> searchObserve(String query){
+        return  new RestClient().restRepo().searchEvent(query).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    DisposableObserver<List<EventModel>> getObserver() {
         return new DisposableObserver<List<EventModel>>() {
             @Override
             public void onNext(List<EventModel> eventModels) {
-                Log.d("EventFrag", "onNext: ");
+                Log.d("EventFrag", "onNext: "+eventModels.size());
+                Log.d("EventFrag", "onComplete: "+eventModels.get(0).getFeatureImage().toString());
                 view.LoadData(eventModels);
             }
 
             @Override
             public void onError(Throwable e) {
-                Log.d("EventFrag", "onError: " + e.getLocalizedMessage());
+                Log.d("EventFrag", "onError: " + e.getMessage());
                 view.FinishLoading();
             }
 

@@ -1,6 +1,9 @@
 package com.dngwjy.app4.fragments;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +15,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +23,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.dngwjy.app4.R;
 import com.dngwjy.app4.data.adapters.MainAdapter;
@@ -37,6 +42,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MapsFragment extends Fragment implements MapsView {
     private SwipeRefreshLayout layout;
@@ -74,12 +80,11 @@ public class MapsFragment extends Fragment implements MapsView {
         setMap(view);
         setMyLocationNewOverlay();
         setRecyclerView(view);
+        ActivityCompat.requestPermissions((Activity) Objects.requireNonNull(this.getContext()),new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
         getLocation();
         layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-//                presenter.getDataVolley();
-//                presenter.getData();
                 presenter.getDataByObserve();
             }
         });
@@ -102,37 +107,50 @@ public class MapsFragment extends Fragment implements MapsView {
     }
 
     void setMyLocationNewOverlay() {
-        myLocationNewOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getContext()), mapView);
+        myLocationNewOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(Objects.requireNonNull(getContext())), mapView);
         myLocationNewOverlay.enableMyLocation();
+        myLocationNewOverlay.getMyLocation();
         mapView.getOverlays().add(myLocationNewOverlay);
         LoadingData();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode==1){
+            if(grantResults.length>0&&grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                Log.d("MapsFragment", "onRequestPermissionsResult: grant");
+                getLocation();
+
+            }else{
+                Log.d("MapsFragment", "onRequestPermissionsResult: denied");
+            }
+        }
+
+    }
+
     void getLocation() {
+        Log.d("loc", "getLocation: after permission");
         listener = new LocationListenering(getContext());
         manager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         int i = getContext().getPackageManager().checkPermission("android.permission.ACCESS_FINE_LOCATION", getContext().getPackageName());
         int j = getContext().getPackageManager().checkPermission("android.permission.ACCESS_COARSE_LOCATION", getContext().getPackageName());
         if (i == PackageManager.PERMISSION_GRANTED && j == PackageManager.PERMISSION_GRANTED) {
-        }
-        manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 1, listener);
-        Location loc = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        Log.d("loc", "getLocation: " + loc);
-        if (loc != null) {
-            curLoc = new GeoPoint(loc.getLatitude(), loc.getLongitude());
-//            presenter.getDataVolley();
-//            presenter.getData();
-            if (!centered) {
-                setCentered(curLoc);
-//                presenter.getData();
+            manager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,0,listener);
+            Location loc = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            Log.d("loc", "getLocation: " + loc);
+            if (loc != null) {
+                curLoc = new GeoPoint(loc.getLatitude(), loc.getLongitude());
+                if (!centered) {
+                    setCentered(curLoc);
+                }
+                Log.d("curloc ", "getLocation: " + curLoc);
             }
-            Log.d("curloc ", "getLocation: " + curLoc);
         }
+
     }
 
     void setCentered(GeoPoint loc) {
         mapController.setCenter(new GeoPoint(loc.getLatitude(), loc.getLongitude()));
-//        presenter.getData();
         presenter.getDataByObserve();
         centered = true;
     }
@@ -187,7 +205,7 @@ public class MapsFragment extends Fragment implements MapsView {
 
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
-
+            getLocation();
         }
 
         @Override
